@@ -1,0 +1,1 @@
+﻿.\ffmpeg.exe -i input.mp4 -vf scale=160:40 -an -r 14 output.mp4
