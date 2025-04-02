@@ -87,8 +87,8 @@ namespace CineWaifu.Domain.Processor
             double brightness = BrightnessCalculator.Calculate(color);
             int idx = (int)Math.Round(brightness / 255 * (_ansiProcessorOptions.AsciiBrightnessTresholds.Length - 1));
             builder.WithLetter(_ansiProcessorOptions.AsciiBrightnessTresholds[idx], 
-                                AnsiColorMap.ClosestColor(_ansiProcessorOptions.CustomShade(color, 50)),
-                                AnsiColorMap.ClosestColor(color));
+                                AnsiColorMap.ClosestColor(_ansiProcessorOptions.ForegroundShader(color, 50)),
+                                AnsiColorMap.ClosestColor(_ansiProcessorOptions.BackgroundShader(color, 100)));
         }
 
         private AnsiProcessorOptions _ansiProcessorOptions = new();

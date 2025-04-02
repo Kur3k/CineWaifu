@@ -2,8 +2,10 @@
 
 namespace CineWaifu.Domain.Shader
 {
-    public class AnsiCustomShaders
+    public class AnsiShaders
     {
+        public static RgbColor Default(RgbColor color, int percentage) => color;
+
         public static RgbColor Darker(RgbColor color, int percentage) => new RgbColor(color.R - GetPercentage(color.R, percentage),
                                                                                        color.G - GetPercentage(color.G, percentage),
                                                                                        color.B - GetPercentage(color.B, percentage));
