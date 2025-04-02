@@ -11,9 +11,9 @@ namespace CineWaifu.Domain.Builder
             _imageBuilder = new StringBuilder();
         }
 
-        public IAnsiImageBuilder WithLetter(char letter, AnsiForegroundColor fgColor = AnsiForegroundColor.White, AnsiBackgroundColor bgColor = AnsiBackgroundColor.Black)
+        public IAnsiImageBuilder WithLetter(char letter, AnsiColor fgColor = AnsiColor.White, AnsiColor bgColor = AnsiColor.Black)
         {
-            _imageBuilder.Append($"\x1b[{(int)fgColor};{(int)bgColor}m");
+            _imageBuilder.Append($"\x1b[38;5;{(int)fgColor}m\x1b[48;5;{(int)bgColor}m");
             _imageBuilder.Append(letter);
             _imageBuilder.Append(_defaultStyling);
             return this;
