@@ -12,7 +12,7 @@ namespace CineWaifu
             int width = 110;
             int height = 30;
             string outputAnsiFile = "output.ans";
-            string inputVideoFile = "Resources/badapple.mp4";
+            string inputVideoFile = "Resources/yuruyuri.mp4";
 
             Console.SetWindowSize(width, height);
             Console.SetBufferSize(width, height);
