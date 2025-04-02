@@ -1,5 +1,4 @@
-﻿
-using CineWaifu.Abstractions;
+﻿using CineWaifu.Abstractions;
 using CineWaifu.Domain;
 using CineWaifu.Domain.Processor;
 

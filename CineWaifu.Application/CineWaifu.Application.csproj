@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CineWaifu.Domain\CineWaifu.Domain\CineWaifu.Domain.csproj" />
+    <ProjectReference Include="..\CineWaifu.Domain\CineWaifu.Domain.csproj" />
   </ItemGroup>
 
 </Project>
