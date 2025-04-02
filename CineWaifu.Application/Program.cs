@@ -22,7 +22,11 @@ namespace CineWaifu
             {
                 try
                 {
-                    IAnsiProcessor processor = new AnsiProcessor(options => { options.AsciiBrightnessTresholds = ".:-=+*#%@WGZ"; });
+                    IAnsiProcessor processor = new AnsiProcessor(options => { 
+                        options.AsciiBrightnessTresholds = ".:-=+*#%@WGZ";
+                        options.Threads = 16;
+                    });
+
                     Console.WriteLine("Processing video to ANSI frames...");
                     processor.SaveProcessedVideoToAnsiFramesFile(outputAnsiFile, inputVideoFile);
                 }
