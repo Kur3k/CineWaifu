@@ -1,7 +1,9 @@
 ﻿using CineWaifu.Abstractions;
 using CineWaifu.Domain.Builder;
+using CineWaifu.Domain.Maps;
 using CineWaifu.Domain.Model;
 using CineWaifu.Domain.Utils;
+using CineWaifu.Domain.Validator;
 using OpenCvSharp;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -17,6 +19,7 @@ namespace CineWaifu.Domain.Processor
 
         public void SaveProcessedVideoToAnsiFramesFile(string ansiFramesFile, string videoName)
         {
+            VideoFileValidator.ValidateVideoFile(videoName);
             List<string> processedFrames = ProcessAllVideoFramesToAnsi(videoName);
             using (StreamWriter writer = new StreamWriter(ansiFramesFile))
             {
@@ -75,19 +78,15 @@ namespace CineWaifu.Domain.Processor
         private void CreateAsciiWrappedInAnsi(RgbColor pixelColor, string asciiBrightnessTresholds, IAnsiImageBuilder builder)
         {
             RgbColor color = pixelColor;
-            double brightness = Brightness(color);
+            double brightness = BrightnessCalculator.Calculate(color);
             int idx = (int)Math.Round(brightness / 255 * (ansiProcessorOptions.AsciiBrightnessTresholds.Length - 1));
-            builder.WithLetter(ansiProcessorOptions.AsciiBrightnessTresholds[idx], AnsiUtils.ClosestColor(GetReverseColor(color), AnsiColorMap.ForegroundColors),
-                                            AnsiUtils.ClosestColor(color, AnsiColorMap.BackgroundColors));
+            builder.WithLetter(ansiProcessorOptions.AsciiBrightnessTresholds[idx], 
+                                AnsiForegroundColorsMap.ClosestColor(GetReverseColor(color)),
+                                AnsiBackgroundColorsMap.ClosestColor(color));
         }
 
         private AnsiProcessorOptions ansiProcessorOptions = new();
-
         private RgbColor GetReverseColor(RgbColor color) => new RgbColor(255 - color.R, 255 - color.G, 255 - color.B);
-
-        private double Brightness(RgbColor color) => (int)(Math.Sqrt(
-            color.R * color.R * .241 +
-            color.G * color.G * .691 +
-            color.B * color.B * .068));
+        
     }
 }
