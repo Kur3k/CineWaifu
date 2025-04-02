@@ -1,5 +1,5 @@
 # CineWaifu
-Apllication converting videos into ANSI standard colored ASCII art frames.
+Application converting videos into ANSI standard colored ASCII art frames.
 
 ## Examples
 ![alt text](https://github.com/Kur3k/CineWaifu/blob/master/Examples/sample1.png?raw=true)
