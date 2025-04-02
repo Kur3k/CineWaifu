@@ -9,8 +9,8 @@ namespace CineWaifu
     {
         static async Task Main(string[] args)
         {
-            int width = 160;
-            int height = 40;
+            int width = 110;
+            int height = 30;
             string outputAnsiFile = "output.ans";
             string inputVideoFile = "Resources/badapple.mp4";
 
