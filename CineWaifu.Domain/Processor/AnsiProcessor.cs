@@ -15,7 +15,7 @@ namespace CineWaifu.Domain.Processor
     {
         public AnsiProcessor(Action<AnsiProcessorOptions>? options = null)
         {
-            options?.Invoke(ansiProcessorOptions);
+            options?.Invoke(_ansiProcessorOptions);
         }
 
         object lockObj = new object();
@@ -35,22 +35,21 @@ namespace CineWaifu.Domain.Processor
 
         private List<string> ProcessAllVideoFramesToAnsi(string videoName)
         {
-            ConcurrentQueue<string> processedFramesQueue = new ConcurrentQueue<string>();
+            ConcurrentQueue<(int index, string content)> processedFramesQueue = new ConcurrentQueue<(int, string)>();
             using (VideoCapture capture = new VideoCapture(videoName))
             {
                 int totalFrames = capture.FrameCount;
 
-                Parallel.For(0, totalFrames, new ParallelOptions { MaxDegreeOfParallelism = ansiProcessorOptions.Threads }, i =>
+                Parallel.For(0, totalFrames, new ParallelOptions { MaxDegreeOfParallelism = _ansiProcessorOptions.Threads }, i =>
                 {
-                    string processedFrame = ProcessVideoFrameToAnsi(capture);
-                    processedFramesQueue.Enqueue(processedFrame);
+                    processedFramesQueue.Enqueue(ProcessVideoFrameToAnsi(capture));
                 });
 
             }
-            return processedFramesQueue.ToList();
+            return processedFramesQueue.OrderBy(x => x.index).Select(x => x.content).ToList();
         }
 
-        private string ProcessVideoFrameToAnsi(VideoCapture capture)
+        private (int position, string content) ProcessVideoFrameToAnsi(VideoCapture capture)
         {   
             MemoryStream stream;
             using (var frame = new Mat())
@@ -60,8 +59,8 @@ namespace CineWaifu.Domain.Processor
                     capture.Read(frame);
                 }
                 stream = frame.ToMemoryStream();
+                return (capture.PosFrames, CreateSingleAnsiFrame(stream));
             }
-            return CreateSingleAnsiFrame(stream);
         }
 
         private string CreateSingleAnsiFrame(MemoryStream imageStream)
@@ -74,7 +73,7 @@ namespace CineWaifu.Domain.Processor
                     for (int x = 0; x < image.Width; x++)
                     {
                         Rgba32 pixelColor = image[x, y];
-                        CreateAsciiWrappedInAnsi(new RgbColor(pixelColor.R, pixelColor.G, pixelColor.B), ansiProcessorOptions.AsciiBrightnessTresholds, builder);
+                        CreateAsciiWrappedInAnsi(new RgbColor(pixelColor.R, pixelColor.G, pixelColor.B), _ansiProcessorOptions.AsciiBrightnessTresholds, builder);
                     }
                     builder.WithNewLine();
                 }
@@ -86,14 +85,12 @@ namespace CineWaifu.Domain.Processor
         {
             RgbColor color = pixelColor;
             double brightness = BrightnessCalculator.Calculate(color);
-            int idx = (int)Math.Round(brightness / 255 * (ansiProcessorOptions.AsciiBrightnessTresholds.Length - 1));
-            builder.WithLetter(ansiProcessorOptions.AsciiBrightnessTresholds[idx], 
-                                AnsiColorMap.ClosestColor(GetReverseColor(color)),
+            int idx = (int)Math.Round(brightness / 255 * (_ansiProcessorOptions.AsciiBrightnessTresholds.Length - 1));
+            builder.WithLetter(_ansiProcessorOptions.AsciiBrightnessTresholds[idx], 
+                                AnsiColorMap.ClosestColor(_ansiProcessorOptions.CustomShade(color, 50)),
                                 AnsiColorMap.ClosestColor(color));
         }
 
-        private AnsiProcessorOptions ansiProcessorOptions = new();
-        private RgbColor GetReverseColor(RgbColor color) => new RgbColor(255 - color.R, 255 - color.G, 255 - color.B);
-        
+        private AnsiProcessorOptions _ansiProcessorOptions = new();
     }
 }
