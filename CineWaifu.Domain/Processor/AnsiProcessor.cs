@@ -7,6 +7,7 @@ using CineWaifu.Domain.Validator;
 using OpenCvSharp;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using System.Collections.Concurrent;
 
 namespace CineWaifu.Domain.Processor
 {
@@ -16,6 +17,8 @@ namespace CineWaifu.Domain.Processor
         {
             options?.Invoke(ansiProcessorOptions);
         }
+
+        object lockObj = new object();
 
         public void SaveProcessedVideoToAnsiFramesFile(string ansiFramesFile, string videoName)
         {
@@ -32,29 +35,33 @@ namespace CineWaifu.Domain.Processor
 
         private List<string> ProcessAllVideoFramesToAnsi(string videoName)
         {
-            List<string> processedFrames = new();
+            ConcurrentQueue<string> processedFramesQueue = new ConcurrentQueue<string>();
             using (VideoCapture capture = new VideoCapture(videoName))
             {
                 int totalFrames = capture.FrameCount;
 
-                for (int i = 0; i < totalFrames; i++)
+                Parallel.For(0, totalFrames, new ParallelOptions { MaxDegreeOfParallelism = ansiProcessorOptions.Threads }, i =>
                 {
-                    processedFrames.Add(ProcessVideoFrameToAnsi(capture));
-                }
+                    string processedFrame = ProcessVideoFrameToAnsi(capture);
+                    processedFramesQueue.Enqueue(processedFrame);
+                });
+
             }
-            return processedFrames;
+            return processedFramesQueue.ToList();
         }
 
         private string ProcessVideoFrameToAnsi(VideoCapture capture)
-        {
+        {   
             MemoryStream stream;
             using (var frame = new Mat())
             {
-                capture.Read(frame);
+                lock (lockObj)
+                {
+                    capture.Read(frame);
+                }
                 stream = frame.ToMemoryStream();
             }
             return CreateSingleAnsiFrame(stream);
-
         }
 
         private string CreateSingleAnsiFrame(MemoryStream imageStream)
