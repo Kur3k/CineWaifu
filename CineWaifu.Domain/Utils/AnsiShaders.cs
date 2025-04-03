@@ -1,9 +1,9 @@
 ﻿using CineWaifu.Abstractions;
-using CineWaifu.Domain.Model;
+using CineWaifu.Domain.Model.Color;
 
-namespace CineWaifu.Domain.Shader
+namespace CineWaifu.Domain.Utils
 {
-    public class AnsiShaders
+    public static class AnsiShaders
     {
         public static RgbColor Default(IColor color, int percentage) => new RgbColor((byte)color.Components[0], (byte)color.Components[1], (byte)color.Components[2]);
 

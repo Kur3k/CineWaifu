@@ -1,5 +1,6 @@
 ﻿using CineWaifu.Abstractions;
-using CineWaifu.Domain.Shader;
+using CineWaifu.Domain.Model.Color;
+using CineWaifu.Domain.Utils;
 
 namespace CineWaifu.Domain.Model
 {

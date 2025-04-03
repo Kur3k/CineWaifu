@@ -1,13 +1,13 @@
 ﻿using CineWaifu.Abstractions;
 using CineWaifu.Abstractions.Enum;
 using CineWaifu.Domain.Extensions;
-using CineWaifu.Domain.Model;
+using CineWaifu.Domain.Model.Color;
 
-namespace CineWaifu.Domain.Maps
+namespace CineWaifu.Domain.Calculators
 {
-    public class AnsiRgbColorMapper : IAnsiColorMapper<RgbColor>
+    public class RgbAnsiColorMapper : IAnsiColorMapper<RgbColor>
     {
-        public AnsiRgbColorMapper(IDistanceProvider distanceProvider)
+        public RgbAnsiColorMapper(IDistanceProvider distanceProvider)
         {
             _distanceProvider = distanceProvider;
         }

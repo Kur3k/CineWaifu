@@ -2,10 +2,10 @@
 
 namespace CineWaifu.Abstractions
 {
-    public interface IAnsiImageBuilder
+    public interface IAnsiFrameBuilder
     {
-        public IAnsiImageBuilder WithLetter(char letter, AnsiColor fgColor, AnsiColor bgColor);
-        public IAnsiImageBuilder WithNewLine();
+        public IAnsiFrameBuilder WithLetter(char letter, AnsiColor fgColor, AnsiColor bgColor);
+        public IAnsiFrameBuilder WithNewLine();
         public string Build();
     }
 }

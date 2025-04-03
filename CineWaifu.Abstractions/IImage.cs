@@ -6,6 +6,5 @@
         int Height { get; }
         IColor GetPixel(int x, int y);
         void SetPixel(int x, int y, IColor color);
-        void Save(string filePath);
     }
 }

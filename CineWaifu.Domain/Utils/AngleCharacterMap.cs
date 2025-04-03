@@ -1,4 +1,4 @@
-﻿namespace CineWaifu.Domain.Maps
+﻿namespace CineWaifu.Domain.Utils
 {
     public static class AngleCharacterMap
     {

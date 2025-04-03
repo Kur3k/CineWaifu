@@ -1,6 +1,6 @@
 ﻿using CineWaifu.Abstractions;
 
-namespace CineWaifu.Domain.Utils
+namespace CineWaifu.Domain.Calculators
 {
     public class EuclidianDistanceProvider : IDistanceProvider
     {
