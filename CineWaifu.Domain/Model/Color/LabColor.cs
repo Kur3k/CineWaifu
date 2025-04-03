@@ -1,6 +1,6 @@
 ﻿using CineWaifu.Abstractions;
 
-namespace CineWaifu.Domain.Model
+namespace CineWaifu.Domain.Model.Color
 {
     public record LabColor : IColor
     {

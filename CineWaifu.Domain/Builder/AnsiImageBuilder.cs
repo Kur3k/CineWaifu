@@ -4,14 +4,14 @@ using System.Text;
 
 namespace CineWaifu.Domain.Builder
 {
-    public class AnsiImageBuilder : IAnsiImageBuilder
+    public class AnsiFrameBuilder : IAnsiFrameBuilder
     {
-        public AnsiImageBuilder()
+        public AnsiFrameBuilder()
         {
             _imageBuilder = new StringBuilder();
         }
 
-        public IAnsiImageBuilder WithLetter(char letter, AnsiColor fgColor = AnsiColor.White, AnsiColor bgColor = AnsiColor.Black)
+        public IAnsiFrameBuilder WithLetter(char letter, AnsiColor fgColor = AnsiColor.White, AnsiColor bgColor = AnsiColor.Black)
         {
             _imageBuilder.Append($"\x1b[38;5;{(int)fgColor}m\x1b[48;5;{(int)bgColor}m");
             _imageBuilder.Append(letter);
@@ -19,7 +19,7 @@ namespace CineWaifu.Domain.Builder
             return this;
         }
 
-        public IAnsiImageBuilder WithNewLine()
+        public IAnsiFrameBuilder WithNewLine()
         {
             _imageBuilder.Append(_newLineAnsi);
             return this;

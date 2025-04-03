@@ -1,4 +1,4 @@
-﻿using CineWaifu.Domain.Model;
+﻿using CineWaifu.Domain.Model.Color;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace CineWaifu.Domain.Extensions

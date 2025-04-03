@@ -21,11 +21,6 @@ namespace CineWaifu.Domain.Model
             return _image[x, y].ToRgbColor();
         }
 
-        public void Save(string filePath)
-        {
-            throw new NotImplementedException();
-        }
-
         public void SetPixel(int x, int y, IColor color)
         {
             _image[x, y] = new Rgba32((byte)color.Components[0], (byte)color.Components[1], (byte)color.Components[2]);

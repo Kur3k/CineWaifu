@@ -1,10 +1,10 @@
 ﻿using CineWaifu.Abstractions;
 using CineWaifu.Domain.Builder;
+using CineWaifu.Domain.Calculators;
 using CineWaifu.Domain.Extensions;
-using CineWaifu.Domain.Maps;
 using CineWaifu.Domain.Model;
+using CineWaifu.Domain.Model.Color;
 using CineWaifu.Domain.Utils;
-using CineWaifu.Domain.Validator;
 using OpenCvSharp;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -17,16 +17,19 @@ namespace CineWaifu.Domain.Processor
         public AnsiProcessor(Action<AnsiProcessorOptions>? options = null)
         {
             options?.Invoke(_ansiProcessorOptions);
-            _ansiColorMapper = new AnsiRgbColorMapper(new EuclidianDistanceProvider());
+            _ansiColorMapper = new RgbAnsiColorMapper(new EuclidianDistanceProvider());
             _gradientCalculator = new GradientCalculator();
-
         }
 
         object lockObj = new object();
 
         public void SaveProcessedVideoToAnsiFramesFile(string ansiFramesFile, string videoName)
         {
-            VideoFileValidator.ValidateVideoFile(videoName);
+            FileInfo videoFileInfo = new FileInfo(videoName);
+            Guards.AgainstNonExistingOrEmptyFile(videoFileInfo);
+            Guards.AgainstNonVideoFileExtension(videoFileInfo);
+            Guards.AgainstInvalidFileType(videoName);
+
             List<string> processedFrames = ProcessAllVideoFramesToAnsi(videoName);
             using (StreamWriter writer = new StreamWriter(ansiFramesFile))
             {
@@ -69,7 +72,7 @@ namespace CineWaifu.Domain.Processor
 
         private string CreateSingleAnsiFrame(MemoryStream imageStream)
         {
-            IAnsiImageBuilder builder = new AnsiImageBuilder();
+            IAnsiFrameBuilder builder = new AnsiFrameBuilder();
             using (var image = Image.Load<Rgba32>(imageStream))
             {
                 IImage? sobel = null;

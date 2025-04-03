@@ -1,7 +1,7 @@
 ﻿using CineWaifu.Domain.Exceptions;
 using FileTypeChecker;
 
-namespace CineWaifu.Domain
+namespace CineWaifu.Domain.Utils
 {
     public static class Guards
     {
