@@ -1,13 +1,18 @@
-﻿using CineWaifu.Abstractions.Enum;
+﻿using CineWaifu.Abstractions;
+using CineWaifu.Abstractions.Enum;
 using CineWaifu.Domain.Extensions;
 using CineWaifu.Domain.Model;
-using CineWaifu.Domain.Utils;
 
 namespace CineWaifu.Domain.Maps
 {
-    public class AnsiColorMap
+    public class AnsiRgbColorMapper : IAnsiColorMapper<RgbColor>
     {
-        public static AnsiColor ClosestColor(RgbColor rgbColor)
+        public AnsiRgbColorMapper(IDistanceProvider distanceProvider)
+        {
+            _distanceProvider = distanceProvider;
+        }
+
+        public AnsiColor GetClosestAnsiColor(RgbColor rgbColor)
         {
             LabColor currentLabColor = rgbColor.ToLab();
             double minDistance = double.MaxValue;
@@ -17,7 +22,7 @@ namespace CineWaifu.Domain.Maps
             {
                 LabColor mapLabColor = color.Value;
 
-                double distance = DistanceCalculator.CalculateEuclidian(mapLabColor, currentLabColor);
+                double distance = _distanceProvider.Calculate(mapLabColor, currentLabColor);
 
                 if (distance < minDistance)
                 {
@@ -28,7 +33,7 @@ namespace CineWaifu.Domain.Maps
             return closestColor;
         }
 
-        private static readonly Lazy<IDictionary<AnsiColor, LabColor>> _colors = new Lazy<IDictionary<AnsiColor, LabColor>>(BuildAnsiColors, true);
+        private readonly Lazy<IDictionary<AnsiColor, LabColor>> _colors = new Lazy<IDictionary<AnsiColor, LabColor>>(BuildAnsiColors, true);
 
         private static IDictionary<AnsiColor, LabColor> BuildAnsiColors()
         {
@@ -292,5 +297,7 @@ namespace CineWaifu.Domain.Maps
                 { AnsiColor.Color255, new RgbColor(255, 255, 255).ToLab() },
             };
         }
+
+        private readonly IDistanceProvider _distanceProvider;
     }
 }

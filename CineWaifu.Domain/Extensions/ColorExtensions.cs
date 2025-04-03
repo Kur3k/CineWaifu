@@ -1,4 +1,5 @@
 ﻿using CineWaifu.Domain.Model;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace CineWaifu.Domain.Extensions
 {
@@ -7,6 +8,11 @@ namespace CineWaifu.Domain.Extensions
         public static LabColor ToLab(this RgbColor color)
         {
             return color.ToXyz().ToLab();
+        }
+
+        public static RgbColor ToRgbColor(this Rgba32 color)
+        {
+            return new RgbColor(color.R, color.G, color.B);
         }
 
         private static LabColor ToLab(this XyzColor xyz)

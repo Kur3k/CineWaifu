@@ -1,5 +1,6 @@
 ﻿using CineWaifu.Abstractions;
 using CineWaifu.Domain.Builder;
+using CineWaifu.Domain.Extensions;
 using CineWaifu.Domain.Maps;
 using CineWaifu.Domain.Model;
 using CineWaifu.Domain.Utils;
@@ -16,6 +17,9 @@ namespace CineWaifu.Domain.Processor
         public AnsiProcessor(Action<AnsiProcessorOptions>? options = null)
         {
             options?.Invoke(_ansiProcessorOptions);
+            _ansiColorMapper = new AnsiRgbColorMapper(new EuclidianDistanceProvider());
+            _gradientCalculator = new GradientCalculator();
+
         }
 
         object lockObj = new object();
@@ -68,12 +72,44 @@ namespace CineWaifu.Domain.Processor
             IAnsiImageBuilder builder = new AnsiImageBuilder();
             using (var image = Image.Load<Rgba32>(imageStream))
             {
+                IImage? sobel = null;
+                if (_ansiProcessorOptions.EdgeDetectionEnabled)
+                {
+                   sobel = new ImageSharpAdapter(image.ToSobelImage());
+                }
+
                 for (int y = 0; y < image.Height; y++)
                 {
                     for (int x = 0; x < image.Width; x++)
                     {
-                        Rgba32 pixelColor = image[x, y];
-                        CreateAsciiWrappedInAnsi(new RgbColor(pixelColor.R, pixelColor.G, pixelColor.B), _ansiProcessorOptions.AsciiBrightnessTresholds, builder);
+                        IColor color = image[x, y].ToRgbColor();
+                        double brightness = color.GetBrightness(new RgbBrightnessCalculator());
+                        int idx = (int)Math.Round(brightness / 255 * (_ansiProcessorOptions.AsciiBrightnessTresholds.Length - 1));
+                        char selectedLetter = _ansiProcessorOptions.AsciiBrightnessTresholds[idx];
+
+                        if (_ansiProcessorOptions.EdgeDetectionEnabled)
+                        {
+                            float gx = 0;
+                            float gy = 0;
+
+                            if (y > 0 && y < image.Height - 1 && x > 0 && x < image.Width - 1)
+                            {
+                                gx = _gradientCalculator.Calculate(new ImageSharpAdapter(image), x, y, SobelKernels.GxKernel);
+                                gy = _gradientCalculator.Calculate(new ImageSharpAdapter(image), x, y, SobelKernels.GyKernel);
+                            }
+
+                            int magnitude = (int)Math.Sqrt(Math.Pow(gx, 2) + Math.Pow(gy, 2));
+                            int angle = (int)(Math.Atan2(gy, gx) * 180 / Math.PI);
+
+                            if (magnitude > _ansiProcessorOptions.EdgeDetectionThreshold)
+                            {
+                                selectedLetter = AngleCharacterMap.Map(angle);
+                            }
+                        }
+
+                        builder.WithLetter(selectedLetter,
+                                           _ansiColorMapper.GetClosestAnsiColor(_ansiProcessorOptions.ForegroundShader(color, 50)),
+                                           _ansiColorMapper.GetClosestAnsiColor(_ansiProcessorOptions.BackgroundShader(color, 100)));
                     }
                     builder.WithNewLine();
                 }
@@ -81,16 +117,8 @@ namespace CineWaifu.Domain.Processor
             return builder.Build();
         }
 
-        private void CreateAsciiWrappedInAnsi(RgbColor pixelColor, string asciiBrightnessTresholds, IAnsiImageBuilder builder)
-        {
-            RgbColor color = pixelColor;
-            double brightness = BrightnessCalculator.Calculate(color);
-            int idx = (int)Math.Round(brightness / 255 * (_ansiProcessorOptions.AsciiBrightnessTresholds.Length - 1));
-            builder.WithLetter(_ansiProcessorOptions.AsciiBrightnessTresholds[idx], 
-                                AnsiColorMap.ClosestColor(_ansiProcessorOptions.ForegroundShader(color, 50)),
-                                AnsiColorMap.ClosestColor(_ansiProcessorOptions.BackgroundShader(color, 100)));
-        }
-
+        private readonly IAnsiColorMapper<RgbColor> _ansiColorMapper;
+        private readonly IGradientCalculator _gradientCalculator;
         private AnsiProcessorOptions _ansiProcessorOptions = new();
     }
 }
