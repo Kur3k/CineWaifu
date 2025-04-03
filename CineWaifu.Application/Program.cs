@@ -11,8 +11,8 @@ namespace CineWaifu
         {
             int width = 110;
             int height = 30;
-            string outputAnsiFile = "output.ans";
-            string inputVideoFile = "Resources/yuruyuri.mp4";
+            string outputAnsiFile = "lucky.ans";
+            string inputVideoFile = "Resources/lucky.mp4";
 
             Console.SetWindowSize(width, height);
             Console.SetBufferSize(width, height);
@@ -22,7 +22,9 @@ namespace CineWaifu
             {
                 try
                 {
-                    IAnsiProcessor processor = new AnsiProcessor(options => { 
+                    IAnsiProcessor processor = new AnsiProcessor(options => {
+                        options.EdgeDetectionEnabled = true;
+                        options.EdgeDetectionThreshold = 128;
                         options.AsciiBrightnessTresholds = ".:-=+*#%@WGZ";
                         options.Threads = 16;
                     });
