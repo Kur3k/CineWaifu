@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CineWaifu.Domain\CineWaifu.Domain.csproj" />
+    <ProjectReference Include="..\CineWaifu.Server\CineWaifu.Server.csproj" />
   </ItemGroup>
 
 </Project>
