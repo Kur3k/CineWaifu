@@ -1,11 +1,13 @@
 ﻿using CineWaifu.Abstractions;
 using CineWaifu.Domain;
+using Cocona;
 
 namespace CineWaifu.Application.Commands
 {
     public class RunCommand
     {
-        public void Run(string inputAnsiFileLocation)
+        [Command("run", Description = "Runs ANSI file.")]
+        public void Run([Option("input-ansi-file-location", ['i'], Description = "Location of ansi file.")] string inputAnsiFileLocation)
         {
             try
             {

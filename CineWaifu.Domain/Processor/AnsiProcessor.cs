@@ -23,8 +23,6 @@ namespace CineWaifu.Domain.Processor
             _gradientCalculator = new GradientCalculator();
         }
 
-        object lockObj = new object();
-
         public void SaveProcessedVideoToAnsiFramesFile(string ansiFramesFile, string inputVideoLocation)
         {
             FileInfo inputVideoFileInfo = new FileInfo(inputVideoLocation);
@@ -44,7 +42,7 @@ namespace CineWaifu.Domain.Processor
 
                 writer.Seek(0, SeekOrigin.Begin);
 
-                using (var compressionStream = LZ4Stream.Encode(File.Create($"{ansiFramesFile}{FileExtensions.ANSI}")))
+                using (var compressionStream = LZ4Stream.Encode(File.Create(ansiFramesFile)))
                 {
                     writer.CopyTo(compressionStream);
                 }
@@ -131,8 +129,9 @@ namespace CineWaifu.Domain.Processor
             return builder.Build();
         }
 
+        private object lockObj = new object();
         private readonly IAnsiColorMapper<RgbColor> _ansiColorMapper;
         private readonly IGradientCalculator _gradientCalculator;
-        private AnsiProcessorOptions _ansiProcessorOptions = new();
+        private readonly AnsiProcessorOptions _ansiProcessorOptions = new();
     }
 }
