@@ -1,6 +1,7 @@
 ﻿using CineWaifu.Abstractions;
 using CineWaifu.Domain.Exceptions;
 using CineWaifu.Domain.Processor;
+using CineWaifu.Domain.Utils;
 
 namespace CineWaifu.Application.Commands
 {
@@ -26,7 +27,7 @@ namespace CineWaifu.Application.Commands
 
                 Console.WriteLine("Processing video to ANSI frames...");
                 processor.SaveProcessedVideoToAnsiFramesFile(outputAnsiFilename, inputVideoLocation);
-                Console.WriteLine($"Processing {outputAnsiFilename}.ansi completed.");
+                Console.WriteLine($"Processing {outputAnsiFilename}{FileExtensions.ANSI} completed.");
             }
             catch (FileNotFoundException e)
             {
@@ -40,7 +41,6 @@ namespace CineWaifu.Application.Commands
             {
                 Console.WriteLine("Provided file isn't actually a video.");
             }
-
         }
     }
 }
