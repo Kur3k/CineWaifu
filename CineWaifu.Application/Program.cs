@@ -11,6 +11,7 @@ namespace CineWaifu
             var app = builder.Build();
 
             app.AddCommands<DownloadCommand>();
+            app.AddCommands<PreprocessCommand>();
             app.AddCommands<GenerateCommand>();
             app.AddCommands<RunCommand>();
             app.AddCommands<ServerCommand>();
