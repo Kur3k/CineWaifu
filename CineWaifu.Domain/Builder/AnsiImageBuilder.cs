@@ -22,6 +22,7 @@ namespace CineWaifu.Domain.Builder
         public IAnsiFrameBuilder WithNewLine()
         {
             _imageBuilder.Append(_newLineAnsi);
+            _imageBuilder.Append(_defaultStyling);
             return this;
         }
 

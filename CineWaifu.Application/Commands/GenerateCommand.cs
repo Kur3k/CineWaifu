@@ -7,7 +7,7 @@ namespace CineWaifu.Application.Commands
 {
     public class GenerateCommand
     {
-        public void GenerateAnsi(string outputAnsiFilename, string inputVideoLocation)
+        public void Generate(string outputAnsiFilename, string inputVideoLocation)
         {
             FileInfo fileInfo = new FileInfo(outputAnsiFilename);
             if (fileInfo.Exists) 

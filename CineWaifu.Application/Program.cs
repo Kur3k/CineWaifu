@@ -18,6 +18,7 @@ namespace CineWaifu
 
             app.AddCommands<GenerateCommand>();
             app.AddCommands<RunCommand>();
+            app.AddCommands<ServerCommand>();
 
             app.Run();
         }

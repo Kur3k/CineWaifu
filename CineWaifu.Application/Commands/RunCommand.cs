@@ -5,7 +5,7 @@ namespace CineWaifu.Application.Commands
 {
     public class RunCommand
     {
-        public void RunAnsi(string inputAnsiFileLocation)
+        public void Run(string inputAnsiFileLocation)
         {
             try
             {

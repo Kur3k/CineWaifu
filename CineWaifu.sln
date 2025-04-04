@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineWaifu.Abstractions", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineWaifu.Domain", "CineWaifu.Domain\CineWaifu.Domain.csproj", "{65A6C2DB-5649-92F5-18DC-21C343D7B328}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CineWaifu.Server", "CineWaifu.Server\CineWaifu.Server.csproj", "{B730D70D-C151-4951-BB70-76BBD4E929A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{65A6C2DB-5649-92F5-18DC-21C343D7B328}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65A6C2DB-5649-92F5-18DC-21C343D7B328}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65A6C2DB-5649-92F5-18DC-21C343D7B328}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B730D70D-C151-4951-BB70-76BBD4E929A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B730D70D-C151-4951-BB70-76BBD4E929A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B730D70D-C151-4951-BB70-76BBD4E929A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B730D70D-C151-4951-BB70-76BBD4E929A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
