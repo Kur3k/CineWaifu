@@ -5,19 +5,39 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PublishSingleFile>true</PublishSingleFile>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
 	<TargetName>CineWaifu</TargetName>
 	<AssemblyName>CineWaifu</AssemblyName>
 	<AssemblyVersion>1.0.0</AssemblyVersion>
+	<Copyright>Kur3k</Copyright>
+	<Title>CineWaifu</Title>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="Resources\icon.ico" />
+  </ItemGroup>
+	
+  <Target Name="RemovePdbFiles" AfterTargets="Publish">
+    <ItemGroup>
+      <PdbFiles Include="$(PublishDir)*.pdb" />
+    </ItemGroup>
+    <Delete Files="@(PdbFiles)" />
+  </Target>
+
+  <ItemGroup>
+    <Compile Remove="Resources\Sample\**" />
+    <EmbeddedResource Remove="Resources\Sample\**" />
+    <None Remove="Resources\Sample\**" />
+  </ItemGroup>
+	
   <ItemGroup>
     <None Remove="External\ffmpeg.exe" />
     <None Remove="External\yt-dlp.exe" />
     <None Remove="Resources\badapple.mp4" />
     <None Remove="Resources\lucky.mp4" />
-    <None Remove="Resources\Sample\badapple.ansi" />
-    <None Remove="Resources\Sample\jurki.ansi" />
-    <None Remove="Resources\Sample\lucky.ansi" />
     <None Remove="Resources\yuri2.mp4" />
     <None Remove="Resources\yuruyuri.mp4" />
   </ItemGroup>
@@ -29,28 +49,13 @@
     <Content Include="External\yt-dlp.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\badapple.mp4">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\lucky.mp4">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Sample\badapple.ansi">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Sample\jurki.ansi">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Sample\lucky.ansi">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\yuruyuri.mp4">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Cocona" Version="2.2.0" />
+    <PackageReference Include="Costura.Fody" Version="6.0.0" PrivateAssets="All" />
+    <PackageReference Include="Fody" Version="6.9.2" />
     <PackageReference Include="OpenCvSharp4.Windows" Version="4.10.0.20241108" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.7" />
   </ItemGroup>
