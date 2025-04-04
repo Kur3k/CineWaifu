@@ -1,0 +1,3 @@
+﻿There should be yt-dlp.exe and ffmpeg.exe called like:
+yt-dlp.exe
+ffmpeg.exe
