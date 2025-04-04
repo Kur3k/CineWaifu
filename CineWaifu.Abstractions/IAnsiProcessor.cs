@@ -2,6 +2,6 @@
 {
     public interface IAnsiProcessor 
     {
-        public void SaveProcessedVideoToAnsiFramesFile(string ansiFramesFile, string videoName);
+        public void SaveProcessedVideoToAnsiFramesFile(string ansiFramesFile, string inputVideoLocation);
     }
 }

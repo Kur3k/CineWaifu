@@ -1,60 +1,25 @@
-﻿using CineWaifu.Abstractions;
-using CineWaifu.Domain;
-using CineWaifu.Domain.Exceptions;
-using CineWaifu.Domain.Processor;
+﻿using CineWaifu.Application.Commands;
+using Cocona;
 
 namespace CineWaifu
 {
     public class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             int width = 110;
             int height = 30;
-            string outputAnsiFile = "lucky.ans";
-            string inputVideoFile = "Resources/lucky.mp4";
 
             Console.SetWindowSize(width, height);
             Console.SetBufferSize(width, height);
 
-            FileInfo fileInfo = new FileInfo(outputAnsiFile);
-            if (!fileInfo.Exists || fileInfo.Length == 0)
-            {
-                try
-                {
-                    IAnsiProcessor processor = new AnsiProcessor(options => {
-                        options.EdgeDetectionEnabled = true;
-                        options.EdgeDetectionThreshold = 128;
-                        options.AsciiBrightnessTresholds = ".:-=+*#%@WGZ";
-                        options.Threads = 16;
-                    });
+            var builder = CoconaApp.CreateBuilder();
+            var app = builder.Build();
 
-                    Console.WriteLine("Processing video to ANSI frames...");
-                    processor.SaveProcessedVideoToAnsiFramesFile(outputAnsiFile, inputVideoFile);
-                }
-                catch (FileNotFoundException e)
-                {
-                    Console.WriteLine("Video file not found.");
-                }
-                catch (InvalidFileException e)
-                {
-                    Console.WriteLine("Invalid video file extension.");
-                }
-                catch (InvalidFileDataTypeException e)
-                {
-                    Console.WriteLine("Provided file isn't actually a video.");
-                }
-            }
+            app.AddCommands<GenerateCommand>();
+            app.AddCommands<RunCommand>();
 
-            try
-            {
-                ICineWaifuRunner runner = new CineWaifuRunner(outputAnsiFile);
-                runner?.Run();
-            }
-            catch(FileNotFoundException e)
-            {
-                Console.WriteLine("Ansi file not found.");
-            }
+            app.Run();
         }
     }
 }

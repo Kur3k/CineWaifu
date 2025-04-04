@@ -23,15 +23,15 @@ namespace CineWaifu.Domain.Processor
 
         object lockObj = new object();
 
-        public void SaveProcessedVideoToAnsiFramesFile(string ansiFramesFile, string videoName)
+        public void SaveProcessedVideoToAnsiFramesFile(string ansiFramesFile, string inputVideoLocation)
         {
-            FileInfo videoFileInfo = new FileInfo(videoName);
-            Guards.AgainstNonExistingOrEmptyFile(videoFileInfo);
-            Guards.AgainstNonVideoFileExtension(videoFileInfo);
-            Guards.AgainstInvalidFileType(videoName);
+            FileInfo inputVideoFileInfo = new FileInfo(inputVideoLocation);
+            Guards.AgainstNonExistingOrEmptyFile(inputVideoFileInfo);
+            Guards.AgainstNonVideoFileExtension(inputVideoFileInfo);
+            Guards.AgainstInvalidFileType(inputVideoFileInfo);
 
-            List<string> processedFrames = ProcessAllVideoFramesToAnsi(videoName);
-            using (StreamWriter writer = new StreamWriter(ansiFramesFile))
+            List<string> processedFrames = ProcessAllVideoFramesToAnsi(inputVideoLocation);
+            using (StreamWriter writer = new StreamWriter($"{ansiFramesFile}.ansi"))
             {
                 foreach (string frame in processedFrames)
                 {
@@ -40,10 +40,10 @@ namespace CineWaifu.Domain.Processor
             }
         }
 
-        private List<string> ProcessAllVideoFramesToAnsi(string videoName)
+        private List<string> ProcessAllVideoFramesToAnsi(string inputVideoLocation)
         {
             ConcurrentQueue<(int index, string content)> processedFramesQueue = new ConcurrentQueue<(int, string)>();
-            using (VideoCapture capture = new VideoCapture(videoName))
+            using (VideoCapture capture = new VideoCapture(inputVideoLocation))
             {
                 int totalFrames = capture.FrameCount;
 
