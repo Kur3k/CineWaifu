@@ -2,13 +2,18 @@
 using CineWaifu.Domain.Exceptions;
 using CineWaifu.Domain.Processor;
 using CineWaifu.Domain.Utils;
+using Cocona;
 
 namespace CineWaifu.Application.Commands
 {
     public class GenerateCommand
     {
-        public void Generate(string outputAnsiFilename, string inputVideoLocation)
+        [Command("generate", Description = "Generate ANSI file from video.")]
+        public void Generate([Option("output-ansi-filename", ['o'], Description = "Output name of ansi file." )] string outputAnsiFilename, 
+                             [Option("input-video-location", ['i'], Description = "Input video file for generating ansi.")] string inputVideoLocation)
         {
+            outputAnsiFilename = outputAnsiFilename.EndsWith(FileExtensions.ANSI) ? outputAnsiFilename : $"{outputAnsiFilename}{FileExtensions.ANSI}";
+
             FileInfo fileInfo = new FileInfo(outputAnsiFilename);
             if (fileInfo.Exists) 
             {
@@ -27,7 +32,7 @@ namespace CineWaifu.Application.Commands
 
                 Console.WriteLine("Processing video to ANSI frames...");
                 processor.SaveProcessedVideoToAnsiFramesFile(outputAnsiFilename, inputVideoLocation);
-                Console.WriteLine($"Processing {outputAnsiFilename}{FileExtensions.ANSI} completed.");
+                Console.WriteLine($"Processing {outputAnsiFilename} completed.");
             }
             catch (FileNotFoundException e)
             {

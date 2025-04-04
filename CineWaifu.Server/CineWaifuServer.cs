@@ -1,16 +1,15 @@
-﻿using System.Net.Sockets;
-using System.Net;
-using K4os.Compression.LZ4.Streams;
-using System.Text;
+﻿using System.Net;
+using System.Net.Sockets;
 
 namespace CineWaifu.Server
 {
     public class CineWaifuServer
     {
-        public CineWaifuServer(string ansiFileLocation, int port)
+        public CineWaifuServer(string ansiFileLocation, bool isDirectory, int port)
         {
             _port = port;
             _ansiFileLocation = ansiFileLocation;
+            _isDirectory = isDirectory;
         }
 
         public void Run()
@@ -18,7 +17,8 @@ namespace CineWaifu.Server
             string ipAddress = "127.0.0.1";
 
             TcpListener server = new TcpListener(IPAddress.Parse(ipAddress), _port);
-
+            Random random = new Random();
+            
             try
             {
                 server.Start();
@@ -34,16 +34,19 @@ namespace CineWaifu.Server
 
                     try
                     {
-                        using (var uncompressed = LZ4Stream.Decode(File.OpenRead(_ansiFileLocation)))
+                        if (_isDirectory)
                         {
-                            using (StreamReader reader = new StreamReader(uncompressed))
-                            {
-                                while (!reader.EndOfStream)
-                                {
-                                    byte[] decodedFrame = Encoding.UTF8.GetBytes(reader.ReadLine()!);
-                                    stream.Write(decodedFrame);
-                                }
-                            }
+                            if (!Directory.Exists(_ansiFileLocation))
+                                throw new Exception($"Directory {_ansiFileLocation} does not exist.");
+
+                            string[] files = Directory.GetFiles(_ansiFileLocation, "*.ansi");
+
+                            int randomFileIndex = random.Next(0, files.Length);
+                            new AnsiFileServer(files[randomFileIndex], stream).Serve();
+                        } 
+                        else
+                        {
+                            new AnsiFileServer(_ansiFileLocation, stream).Serve();
                         }
                     }
                     catch (Exception ex)
@@ -65,5 +68,6 @@ namespace CineWaifu.Server
 
         private readonly int _port;
         private readonly string _ansiFileLocation;
+        private readonly bool _isDirectory;
     }
 }
