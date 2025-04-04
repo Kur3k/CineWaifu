@@ -17,9 +17,9 @@ namespace CineWaifu.Domain.Utils
                 throw new InvalidFileException();
         }
 
-        public static void AgainstInvalidFileType(string filename)
+        public static void AgainstInvalidFileType(FileInfo fileInfo)
         {
-            using (var fileStream = File.OpenRead(filename))
+            using (var fileStream = File.OpenRead(fileInfo.FullName))
             {
                 var isRecognizableType = FileTypeValidator.IsTypeRecognizable(fileStream);
 
