@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="External\ffmpeg.exe" />
+    <None Remove="External\yt-dlp.exe" />
     <None Remove="Resources\badapple.mp4" />
     <None Remove="Resources\lucky.mp4" />
     <None Remove="Resources\yuri2.mp4" />
@@ -15,6 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="External\ffmpeg.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="External\yt-dlp.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\badapple.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
