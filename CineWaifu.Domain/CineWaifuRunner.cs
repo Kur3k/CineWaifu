@@ -1,4 +1,5 @@
 ﻿using CineWaifu.Abstractions;
+using K4os.Compression.LZ4.Streams;
 
 namespace CineWaifu.Domain
 {
@@ -11,14 +12,15 @@ namespace CineWaifu.Domain
 
         public void Run()
         {
-
-            using (StreamReader reader = new StreamReader(_ansiFileLocation))
+            using (var uncompressed = LZ4Stream.Decode(File.OpenRead(_ansiFileLocation)))
             {
-                while (!reader.EndOfStream)
+                using (StreamReader reader = new StreamReader(uncompressed))
                 {
-                    Console.Write(reader.ReadLine());
+                    while (!reader.EndOfStream)
+                    {
+                        Console.Write(reader.ReadLine());
+                    }
                 }
-                
             }
         }
 

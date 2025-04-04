@@ -5,10 +5,12 @@ using CineWaifu.Domain.Extensions;
 using CineWaifu.Domain.Model;
 using CineWaifu.Domain.Model.Color;
 using CineWaifu.Domain.Utils;
+using K4os.Compression.LZ4.Streams;
 using OpenCvSharp;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System.Collections.Concurrent;
+using System.Text;
 
 namespace CineWaifu.Domain.Processor
 {
@@ -31,11 +33,20 @@ namespace CineWaifu.Domain.Processor
             Guards.AgainstInvalidFileType(inputVideoFileInfo);
 
             List<string> processedFrames = ProcessAllVideoFramesToAnsi(inputVideoLocation);
-            using (StreamWriter writer = new StreamWriter($"{ansiFramesFile}.ansi"))
+
+            using (MemoryStream writer = new MemoryStream())
             {
                 foreach (string frame in processedFrames)
                 {
-                    writer.WriteLine(frame);
+                    byte[] frameBytes = Encoding.UTF8.GetBytes(frame + "\n");
+                    writer.Write(frameBytes);
+                }
+
+                writer.Seek(0, SeekOrigin.Begin);
+
+                using (var compressionStream = LZ4Stream.Encode(File.Create($"{ansiFramesFile}{FileExtensions.ANSI}")))
+                {
+                    writer.CopyTo(compressionStream);
                 }
             }
         }
