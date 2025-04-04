@@ -38,7 +38,7 @@ namespace CineWaifu.Application.Commands
 
                 process = new Process();
                 process.StartInfo.FileName = "./External/ffmpeg.exe";
-                process.StartInfo.Arguments = $"-i {filename} -vf scale=100:30 -an -r {fpsLimit} {outputFilename}";
+                process.StartInfo.Arguments = $"-i {filename} -vf scale={width}:{height} -an -r {fpsLimit} {outputFilename}";
                 process.Start();
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
