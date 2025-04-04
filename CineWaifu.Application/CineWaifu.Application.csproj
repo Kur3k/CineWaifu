@@ -12,6 +12,9 @@
     <None Remove="External\yt-dlp.exe" />
     <None Remove="Resources\badapple.mp4" />
     <None Remove="Resources\lucky.mp4" />
+    <None Remove="Resources\Sample\badapple.ansi" />
+    <None Remove="Resources\Sample\jurki.ansi" />
+    <None Remove="Resources\Sample\lucky.ansi" />
     <None Remove="Resources\yuri2.mp4" />
     <None Remove="Resources\yuruyuri.mp4" />
   </ItemGroup>
@@ -27,6 +30,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\lucky.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Sample\badapple.ansi">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Sample\jurki.ansi">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Sample\lucky.ansi">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\yuruyuri.mp4">
