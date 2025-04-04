@@ -7,12 +7,6 @@ namespace CineWaifu
     {
         static void Main(string[] args)
         {
-            int width = 100;
-            int height = 30;
-
-            Console.SetWindowSize(width, height);
-            Console.SetBufferSize(width, height);
-
             var builder = CoconaApp.CreateBuilder();
             var app = builder.Build();
 
