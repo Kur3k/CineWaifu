@@ -31,18 +31,21 @@ namespace CineWaifu.Domain.Processor
             Guards.AgainstInvalidFileType(inputVideoFileInfo);
 
             List<string> processedFrames = ProcessAllVideoFramesToAnsi(inputVideoLocation);
+            (int width, int height) = new VideoResolutionProvider().GetResolution(inputVideoLocation);
 
             using (MemoryStream writer = new MemoryStream())
             {
+                writer.Write(Encoding.UTF8.GetBytes($"{width}:{height}\n"));
                 foreach (string frame in processedFrames)
                 {
-                    byte[] frameBytes = Encoding.UTF8.GetBytes(frame + "\n");
+                    byte[] frameBytes = Encoding.UTF8.GetBytes($"{frame}\n");
                     writer.Write(frameBytes);
                 }
 
                 writer.Seek(0, SeekOrigin.Begin);
 
-                using (var compressionStream = LZ4Stream.Encode(File.Create(ansiFramesFile)))
+                using (var fileStream = File.Create(ansiFramesFile))
+                using (var compressionStream = LZ4Stream.Encode(fileStream))
                 {
                     writer.CopyTo(compressionStream);
                 }

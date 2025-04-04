@@ -18,6 +18,8 @@ namespace CineWaifu.Server
             {
                 using (StreamReader reader = new StreamReader(uncompressed))
                 {
+                    reader.ReadLine(); //Skipping first line
+
                     while (!reader.EndOfStream)
                     {
                         byte[] decodedFrame = Encoding.UTF8.GetBytes(reader.ReadLine()!);

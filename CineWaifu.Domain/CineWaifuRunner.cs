@@ -16,6 +16,11 @@ namespace CineWaifu.Domain
             {
                 using (StreamReader reader = new StreamReader(uncompressed))
                 {
+                    string[] resolution = reader.ReadLine()!.Split(":");
+                    int width = int.Parse(resolution[0]);
+                    int height = int.Parse(resolution[1]);
+                    Console.SetWindowSize(width, height);
+
                     while (!reader.EndOfStream)
                     {
                         Console.Write(reader.ReadLine());
