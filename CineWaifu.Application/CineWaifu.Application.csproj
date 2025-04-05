@@ -17,6 +17,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Samples\Ansi\badapple.ansi" />
+    <None Remove="Resources\Samples\Ansi\jurki.ansi" />
+    <None Remove="Resources\Samples\Ansi\lucky.ansi" />
+    <None Remove="Resources\Samples\Videos\badapple.mp4" />
+    <None Remove="Resources\Samples\Videos\lucky.mp4" />
+    <None Remove="Resources\Samples\Videos\yuruyuri.mp4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Resources\icon.ico" />
   </ItemGroup>
 	
@@ -26,27 +35,30 @@
     </ItemGroup>
     <Delete Files="@(PdbFiles)" />
   </Target>
-
-  <ItemGroup>
-    <Compile Remove="Resources\Sample\**" />
-    <EmbeddedResource Remove="Resources\Sample\**" />
-    <None Remove="Resources\Sample\**" />
-  </ItemGroup>
 	
-  <ItemGroup>
-    <None Remove="External\ffmpeg.exe" />
-    <None Remove="External\yt-dlp.exe" />
-    <None Remove="Resources\badapple.mp4" />
-    <None Remove="Resources\lucky.mp4" />
-    <None Remove="Resources\yuri2.mp4" />
-    <None Remove="Resources\yuruyuri.mp4" />
-  </ItemGroup>
-
   <ItemGroup>
     <Content Include="External\ffmpeg.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="External\yt-dlp.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Samples\Ansi\badapple.ansi">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Samples\Ansi\jurki.ansi">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Samples\Ansi\lucky.ansi">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Samples\Videos\badapple.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Samples\Videos\lucky.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Samples\Videos\yuruyuri.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
