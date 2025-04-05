@@ -1,6 +1,6 @@
-﻿using CineWaifu.Abstractions;
+﻿using Cocona;
+using CineWaifu.Abstractions;
 using CineWaifu.Domain;
-using Cocona;
 
 namespace CineWaifu.Application.Commands
 {

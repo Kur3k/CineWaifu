@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 **/CineWaifu.Application/External/*.exe
+/CineWaifu.Application/Properties/launchSettings.json
