@@ -1,5 +1,5 @@
-﻿using CineWaifu.Server;
-using Cocona;
+﻿using Cocona;
+using CineWaifu.Server;
 
 namespace CineWaifu.Application.Commands
 {
