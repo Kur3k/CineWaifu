@@ -20,7 +20,7 @@ namespace CineWaifu.Application.Commands
             try
             {
                 outputFilename = outputFilename.EndsWith(".mp4") ? outputFilename : $"{outputFilename}.mp4";
-                await _processRunner.RunProcessAsync("./External/yt-dlp.exe", $"-i {inputFileLocation} -vf scale={width}:{height} -an -r {fpsLimit} {outputFilename}");
+                await _processRunner.RunProcessAsync("./External/ffmpeg.exe", $"-i {inputFileLocation} -vf scale={width}:{height} -an -r {fpsLimit} {outputFilename}");
                 Console.WriteLine($"File has been processed.");
             }
             catch (Exception e)
