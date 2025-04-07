@@ -2,7 +2,7 @@
 Application converting videos into ANSI standard colored ASCII art frames.
 
 ## Usage
-`.\CineWaifu.exe --help`
+`.\CineWaifu.exe --help`  
 Commands:
   download      Downloads and preprocesses video for ansi frame generation.
   preprocess    Preprocesses video for ansi frame generation.
@@ -12,10 +12,10 @@ Commands:
 
 Sample commands usage:
 
-Generating ansi file:
+Generating ansi file:  
 `.\CineWaifu.exe run -i .\Resources\Samples\Videos\badapple.mp4 -o badapple`
 
-Running an ansi file:
+Running an ansi file:  
 `.\CineWaifu.exe run -i .\Resources\Samples\Ansi\badapple.ansi`
 
 ## Examples
